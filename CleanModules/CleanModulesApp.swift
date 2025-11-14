@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
-
+import APIClient
 @main
 struct CleanModulesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MovieTabView()
         }
     }
 }

@@ -12,7 +12,7 @@ struct ShowRowView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w200\(show.posterPath ?? "")")) { image in
+            AsyncImage(url: URL(string: "\(imagePath)\(show.posterPath ?? "")")) { image in
                 image
                     .resizable()
                     .scaledToFill()

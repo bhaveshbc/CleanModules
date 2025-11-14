@@ -1,15 +1,15 @@
 //
-//  TodayMoviesEndPoint.swift
+//  MovieListEndPoint.swift
 //  CleanModules
 //
 //  Created by Bhavesh Chaudhari on 14/11/25.
-// https://api.themoviedb.org/3/tv/airing_today?page=1&language=en&api_key=06e1a8c1f39b7a033e2efb972625fee2
 
 import APIClient
 
-enum TodayMoviesEndPoint: EndPointType {
+enum MovieListEndPoint: EndPointType {
    
     case todayMovies(param: ParamType)
+    case popularMovies(param: ParamType)
     
     var domainName: String {
         return "https://api.themoviedb.org"
@@ -19,6 +19,8 @@ enum TodayMoviesEndPoint: EndPointType {
         switch self {
         case .todayMovies:
             return "/3/tv/airing_today"
+        case .popularMovies:
+            return "/3/tv/popular"
         }
     }
     
@@ -28,7 +30,7 @@ enum TodayMoviesEndPoint: EndPointType {
     
     var task: HTTPTask {
         switch self {
-        case .todayMovies(let paramType):
+        case .todayMovies(let paramType), .popularMovies(let paramType):
             return .requestParameters(bodyParameters: paramType)
         }
     }

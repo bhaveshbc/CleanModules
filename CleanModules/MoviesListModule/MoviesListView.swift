@@ -1,5 +1,5 @@
 //
-//  TodayMoviesView.swift
+//  MoviesListView.swift
 //  CleanModules
 //
 //  Created by Bhavesh Chaudhari on 14/11/25.
@@ -9,24 +9,24 @@ import SwiftUI
 import DesignKit
 import ModelsKit
 
-struct TodayMoviesView: View {
+struct MoviesListView: View {
     
-    @TodayMovieStore var todayMovieStore: TodayMoviesListState
-    
+    @MovieListStore var movieStore: MoviesListState
     var body: some View {
+        
+        let _ = Self._printChanges()
+        
         VStack {
-            switch $todayMovieStore.state.displayState {
+            switch $movieStore.state.displayState {
             case .loading:
                 LoadingView(loaderColor: .goldenYellow)
             case .loaded(let movies), .paginating(let movies):
-                MovieList(movies: movies, isPaginating: $todayMovieStore.state.isPagningNating, onRefresh: $todayMovieStore.actions.onRefresh, onLoadMore: $todayMovieStore.actions.onLoadMore)
+                MovieList(movies: movies, isPaginating: $movieStore.state.isPagningNating, onRefresh: $movieStore.actions.onRefresh, onLoadMore: $movieStore.actions.onLoadMore)
             case .empty(let message), .error(let message):
                 EmptyStateView(message: message)
             }
-        }.task {
-            Task {
-                await $todayMovieStore.actions.onRefresh()
-            }
+        }.task(id: false) {
+            await $movieStore.actions.onRefresh()
         }
     }
 }

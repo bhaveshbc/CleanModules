@@ -1,12 +1,12 @@
 //
-//  TodayMoviesState.swift
+//  MoviesListState.swift
 //  CleanModules
 //
 //  Created by Bhavesh Chaudhari on 14/11/25.
 //
 import ModelsKit
 import Foundation
-struct TodayMoviesListState {
+struct MoviesListState {
     
     var movies: [TVShow2DTO] = []
     var pageIndex: Int = 1
@@ -46,7 +46,7 @@ struct TodayMoviesListState {
     }
 }
 
-enum TodayMoviesListAction {
+enum MoviesListAction {
     case startLoading(isInitial: Bool)
     case loadSuccess(notifications: [TVShow2DTO], totalCount: Int)
     case loadFailure(error: String)
@@ -54,7 +54,7 @@ enum TodayMoviesListAction {
     case incrementPage
 }
 
-func reduce(state: TodayMoviesListState, action: TodayMoviesListAction) -> TodayMoviesListState {
+func reduce(state: MoviesListState, action: MoviesListAction) -> MoviesListState {
     var newState = state
     
     switch action {

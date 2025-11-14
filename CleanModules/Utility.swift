@@ -7,3 +7,4 @@
 import SwiftUI
 
 let rootUrl = "https://api.themoviedb.org"
+let imagePath = "https://image.tmdb.org/t/p/w200"
