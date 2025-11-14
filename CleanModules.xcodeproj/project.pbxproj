@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C9DE9D62EC6EC4F007A18F6 /* ModelsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7C9DE9D52EC6EC4F007A18F6 /* ModelsKit */; };
 		7CA3B45E2EC1E41F00AED7E4 /* APIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA3B45D2EC1E41F00AED7E4 /* APIClient */; };
 		7CA3B4612EC1E43700AED7E4 /* DesignKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA3B4602EC1E43700AED7E4 /* DesignKit */; };
 		7CA3B4642EC1E46000AED7E4 /* LoginKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7CA3B4632EC1E46000AED7E4 /* LoginKit */; };
@@ -59,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9DE9D62EC6EC4F007A18F6 /* ModelsKit in Frameworks */,
 				7CA3B45E2EC1E41F00AED7E4 /* APIClient in Frameworks */,
 				7CA3B4672EC1E4A100AED7E4 /* LoginKit in Frameworks */,
 				7CA3B4612EC1E43700AED7E4 /* DesignKit in Frameworks */,
@@ -127,6 +129,7 @@
 				7CA3B4602EC1E43700AED7E4 /* DesignKit */,
 				7CA3B4632EC1E46000AED7E4 /* LoginKit */,
 				7CA3B4662EC1E4A100AED7E4 /* LoginKit */,
+				7C9DE9D52EC6EC4F007A18F6 /* ModelsKit */,
 			);
 			productName = CleanModules;
 			productReference = 7CA3B4242EC1E3A900AED7E4 /* CleanModules.app */;
@@ -214,6 +217,7 @@
 				7CA3B45C2EC1E41F00AED7E4 /* XCLocalSwiftPackageReference "../SwiftAPIClient" */,
 				7CA3B45F2EC1E43700AED7E4 /* XCLocalSwiftPackageReference "../DesignKit" */,
 				7CA3B4652EC1E4A100AED7E4 /* XCLocalSwiftPackageReference "../LoginKit" */,
+				7C9DE9D42EC6EC4F007A18F6 /* XCLocalSwiftPackageReference "../ModelsKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7CA3B4252EC1E3A900AED7E4 /* Products */;
@@ -615,6 +619,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		7C9DE9D42EC6EC4F007A18F6 /* XCLocalSwiftPackageReference "../ModelsKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../ModelsKit;
+		};
 		7CA3B45C2EC1E41F00AED7E4 /* XCLocalSwiftPackageReference "../SwiftAPIClient" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../SwiftAPIClient;
@@ -630,6 +638,10 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7C9DE9D52EC6EC4F007A18F6 /* ModelsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModelsKit;
+		};
 		7CA3B45D2EC1E41F00AED7E4 /* APIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = APIClient;
