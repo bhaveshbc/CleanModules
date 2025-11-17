@@ -6,6 +6,8 @@
 //
 import Foundation
 import SwiftUI
+import ModelsKit
+
 @propertyWrapper
 struct MovieListStore: DynamicProperty {
     
@@ -24,17 +26,27 @@ struct MovieListStore: DynamicProperty {
     
     @MainActor
     var projectedValue: TodayMovieStoreProjection {
-        TodayMovieStoreProjection(state: state, actions: .init(onRefresh: handleRefresh, onLoadMore: loadMore))
+        TodayMovieStoreProjection(state: state, actions: .init(onRefresh: handleRefresh, onLoadMore: loadMore, onTapMovie: onTapMovie))
     }
     
     @MainActor
     private func handleRefresh() async {
         currentTask?.cancel()
         currentTask = nil
-        // Reset state
+        
         state = reduce(state: state, action: .reset)
         
         await performLoad()
+    }
+    
+    @MainActor
+    func onTapMovie(_ movie: TVShow2DTO) {
+        state = reduce(state: state, action: .movieSelected(movie))
+    }
+    
+    @MainActor
+    func resetMoveieSelection() {
+        state = reduce(state: state, action: .movieSelected(nil))
     }
     
     @MainActor

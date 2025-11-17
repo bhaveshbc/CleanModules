@@ -14,6 +14,7 @@ struct MoviesListState {
     var isIntialLoading: Bool = false
     var isPagningNating: Bool = false
     var error: String?
+    var selectedMovie: TVShow2DTO?
     
     var isEmpty: Bool {
         movies.isEmpty && !isIntialLoading
@@ -52,6 +53,7 @@ enum MoviesListAction {
     case loadFailure(error: String)
     case reset
     case incrementPage
+    case movieSelected(TVShow2DTO?)
 }
 
 func reduce(state: MoviesListState, action: MoviesListAction) -> MoviesListState {
@@ -81,6 +83,9 @@ func reduce(state: MoviesListState, action: MoviesListAction) -> MoviesListState
         
     case .incrementPage:
         newState.pageIndex += 1
+        
+    case .movieSelected(let movie):
+        newState.selectedMovie = movie
     }
     
     return newState
@@ -89,4 +94,5 @@ func reduce(state: MoviesListState, action: MoviesListAction) -> MoviesListState
 struct MovieListAction {
     let onRefresh: () async -> Void
     let onLoadMore: (Int, Int) async -> Void
+    let onTapMovie: (TVShow2DTO)  -> Void
 }

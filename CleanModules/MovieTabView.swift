@@ -16,19 +16,61 @@ struct MovieTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            NavigationStack {
-                MoviesListView(movieStore: .init(service: diObject.todayApiService))
-                .navigationTitle("Today Movies")
-            }
+            TodayMovieTabView(apiService: diObject.todayApiService)
             .tabItem { Label("Today", systemImage: "calendar.badge.clock") }
             .tag(0)
 
-            NavigationStack {
-                MoviesListView(movieStore: .init(service: diObject.popularApiService))
-                    .navigationTitle("Popular Movies")
-            }
+            PopularMovieTabView(apiService: diObject.todayApiService)
             .tabItem { Label("Popular", systemImage: "star.fill") }
             .tag(1)
         }
     }
 }
+
+
+struct TodayMovieTabView: View {
+    
+    let store: MovieListStore
+    @State var path = NavigationPath()
+    
+    init(apiService: MoviesListApiServiceProtocol) {
+        self.store = .init(service: apiService)
+    }
+    
+    var body: some View {
+        NavigationStack(path: $path) {
+            MoviesListView(movieStore: store)
+            .navigationTitle("Today Movies")
+        }.onChange(of: store.state.selectedMovie) {
+            if let movie = store.state.selectedMovie {
+                    path.append(movie)
+                    store.resetMoveieSelection()
+                }
+        }
+    }
+}
+
+
+struct PopularMovieTabView: View {
+    
+    let store: MovieListStore
+    @State var path = NavigationPath()
+    
+    init(apiService: MoviesListApiServiceProtocol) {
+        self.store = .init(service: apiService)
+    }
+    
+    var body: some View {
+        NavigationStack(path: $path) {
+            MoviesListView(movieStore: store)
+                .navigationTitle("Popular Movies")
+        }.onChange(of: store.state.selectedMovie) {
+            if let movie = store.state.selectedMovie {
+                    path.append(movie)
+                    store.resetMoveieSelection()
+                }
+        }
+
+    }
+}
+
