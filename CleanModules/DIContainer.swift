@@ -18,4 +18,7 @@ final class DIContainer {
     lazy var todayApiService: MoviesListApiServiceProtocol = TodayMoviesApiService(router: networkClient)
     @ObservationIgnored
     lazy var popularApiService: MoviesListApiServiceProtocol = PopularMoviesApiService(router: networkClient)
+    
+    @ObservationIgnored
+    lazy var movieDetailService: MovieDetailApiServiceProtocol = MovieDetailApiService(router: networkClient)
 }

@@ -6,111 +6,136 @@
 //
 import SwiftUI
 import ModelsKit
+import DesignKit
 
 struct MovieDetailView: View {
     
-    let movie: TVShowDetailDTO
+    @State private var store: MoveDetailStore
+    private enum CoordinateSpaces {
+            case scrollView
+        }
+    
+    init(store: MoveDetailStore) {
+        self.store = store
+    }
     
     var body: some View {
+        VStack {
+            switch store.state.displayState {
+            case .loading:
+                LoadingView(loaderColor: .goldenYellow)
+            case .loaded(let tVShowDetailDTO):
+                scrollView(for: tVShowDetailDTO)
+            case .loadFailure(let error):
+                EmptyStateView(message: error)
+            }
+        }.task(id: false) {
+             store.fetchMoveDetail()
+        }
+    }
+    
+    func scrollView(for movie: TVShowDetailDTO) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
 
                 // MARK: Top Image
-                AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w780\(movie.backdropPath ?? "")")) { img in
-                    img
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.gray.opacity(0.3)
-                }
-                .frame(height: 260)
-                .clipped()
-                
-                // MARK: Title & Tagline
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(movie.name ?? "")
-                        .font(.largeTitle.bold())
-                    
-                    if let tagline = movie.tagline, !tagline.isEmpty {
-                        Text(tagline)
-                            .font(.headline)
-                            .foregroundColor(.secondary)
+                ParallaxHeader(coordinateSpace: CoordinateSpaces.scrollView, defaultHeight: 260, {
+                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w780\(movie.backdropPath ?? "")")) { img in
+                        img
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        Color.gray.opacity(0.3)
                     }
-                }
-                .padding(.horizontal)
-                
-                
-                // MARK: Genres
-                if !movie.genres.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 10) {
-                            ForEach(movie.genres, id: \.id) { genre in
-                                Text(genre.name)
-                                    .font(.subheadline)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 6)
-                                    .background(Color.blue.opacity(0.15))
-                                    .clipShape(Capsule())
-                            }
+                })
+                // MARK: Title & Tagline
+                VStack {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(movie.name ?? "")
+                            .font(.largeTitle.bold())
+                        
+                        if let tagline = movie.tagline, !tagline.isEmpty {
+                            Text(tagline)
+                                .font(.headline)
+                                .foregroundColor(.secondary)
                         }
+                    }.background(Color.white)
+                    .padding(.horizontal)
+                    
+                    
+                    // MARK: Genres
+                    if !movie.genres.isEmpty {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 10) {
+                                ForEach(movie.genres, id: \.id) { genre in
+                                    Text(genre.name)
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 6)
+                                        .background(Color.blue.opacity(0.15))
+                                        .clipShape(Capsule())
+                                }
+                            }.background(Color.white)
+                            .padding(.horizontal)
+                        }
+                    }
+
+                    // MARK: Overview
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Overview")
+                            .font(.title3.bold())
+                        
+                        Text(movie.overview ?? "")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }.background(Color.white)
+                    .padding(.horizontal)
+                    
+                    
+                    // MARK: Creator Section
+                    if !movie.createdBy.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Created By")
+                                .font(.title3.bold())
+
+                            ForEach(movie.createdBy, id: \.id) { creator in
+                                HStack(spacing: 12) {
+                                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(creator.profilePath ?? "")")) { img in
+                                        img.resizable().scaledToFill()
+                                    } placeholder: {
+                                        Color.gray.opacity(0.2)
+                                    }
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Circle())
+
+                                    VStack(alignment: .leading) {
+                                        Text(creator.name)
+                                            .font(.headline)
+                                        Text("ID: \(creator.id)")
+                                            .foregroundColor(.secondary)
+                                            .font(.subheadline)
+                                    }
+                                }
+                            }
+                        }.background(Color.white)
                         .padding(.horizontal)
                     }
-                }
 
-                // MARK: Overview
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Overview")
-                        .font(.title3.bold())
-                    
-                    Text(movie.overview ?? "")
-                        .font(.body)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.horizontal)
-                
-                
-                // MARK: Creator Section
-                if !movie.createdBy.isEmpty {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Created By")
-                            .font(.title3.bold())
-
-                        ForEach(movie.createdBy, id: \.id) { creator in
-                            HStack(spacing: 12) {
-                                AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(creator.profilePath ?? "")")) { img in
-                                    img.resizable().scaledToFill()
-                                } placeholder: {
-                                    Color.gray.opacity(0.2)
-                                }
-                                .frame(width: 50, height: 50)
-                                .clipShape(Circle())
-
-                                VStack(alignment: .leading) {
-                                    Text(creator.name)
-                                        .font(.headline)
-                                    Text("ID: \(creator.id)")
-                                        .foregroundColor(.secondary)
-                                        .font(.subheadline)
-                                }
-                            }
-                        }
+                    // MARK: Next & Last Episodes
+                    if let last = movie.lastEpisodeToAir {
+                        episodeSection(title: "Last Episode", ep: last).background(Color.white)
                     }
-                    .padding(.horizontal)
-                }
 
-                // MARK: Next & Last Episodes
-                if let last = movie.lastEpisodeToAir {
-                    episodeSection(title: "Last Episode", ep: last)
-                }
-
-                if let next = movie.nextEpisodeToAir {
-                    episodeSection(title: "Next Episode", ep: next)
-                }
-                
-                Spacer().frame(height: 20)
+                    if let next = movie.nextEpisodeToAir {
+                        episodeSection(title: "Next Episode", ep: next).background(Color.white)
+                    }
+                    
+                    Spacer().frame(height: 20).background(Color.white)
+                }.frame(maxWidth: .infinity).background(Color.white)
             }
-        }
+        }.coordinateSpace(name: CoordinateSpaces.scrollView)
         .ignoresSafeArea(edges: .top)
+
     }
     
     // MARK: Episode Card Section

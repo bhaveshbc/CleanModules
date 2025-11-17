@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import APIClient
+import ModelsKit
 
 struct MovieTabView: View {
     
@@ -16,11 +17,11 @@ struct MovieTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            TodayMovieTabView(apiService: diObject.todayApiService)
+            TodayMovieTabView(apiService: diObject.todayApiService).environment(diObject)
             .tabItem { Label("Today", systemImage: "calendar.badge.clock") }
             .tag(0)
 
-            PopularMovieTabView(apiService: diObject.todayApiService)
+            PopularMovieTabView(apiService: diObject.todayApiService).environment(diObject)
             .tabItem { Label("Popular", systemImage: "star.fill") }
             .tag(1)
         }
@@ -32,6 +33,7 @@ struct TodayMovieTabView: View {
     
     let store: MovieListStore
     @State var path = NavigationPath()
+    @Environment(DIContainer.self) var diObject
     
     init(apiService: MoviesListApiServiceProtocol) {
         self.store = .init(service: apiService)
@@ -39,7 +41,7 @@ struct TodayMovieTabView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            MoviesListView(movieStore: store)
+            MoviesListView(movieStore: store).environment(diObject)
             .navigationTitle("Today Movies")
         }.onChange(of: store.state.selectedMovie) {
             if let movie = store.state.selectedMovie {
@@ -55,6 +57,7 @@ struct PopularMovieTabView: View {
     
     let store: MovieListStore
     @State var path = NavigationPath()
+    @Environment(DIContainer.self) var diObject
     
     init(apiService: MoviesListApiServiceProtocol) {
         self.store = .init(service: apiService)
@@ -62,7 +65,7 @@ struct PopularMovieTabView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            MoviesListView(movieStore: store)
+            MoviesListView(movieStore: store).environment(diObject)
                 .navigationTitle("Popular Movies")
         }.onChange(of: store.state.selectedMovie) {
             if let movie = store.state.selectedMovie {

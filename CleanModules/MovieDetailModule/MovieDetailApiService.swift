@@ -8,7 +8,7 @@ import ModelsKit
 import APIClient
 import Foundation
 
-protocol MovieDetailApiServiceProtocol {
+protocol MovieDetailApiServiceProtocol: Sendable {
     func fetchMovieDetail(movieId: Int) async throws -> TVShowDetailDTO
 }
 

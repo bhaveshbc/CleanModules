@@ -12,6 +12,7 @@ import ModelsKit
 struct MoviesListView: View {
     
     @MovieListStore var movieStore: MoviesListState
+    @Environment(DIContainer.self) var diObject
     
     var body: some View {
         
@@ -29,7 +30,8 @@ struct MoviesListView: View {
         }.task(id: false) {
             await $movieStore.actions.onRefresh()
         }.navigationDestination(for: TVShow2DTO.self) { movie in
-            MovieDetailView1(movie: movie)
+            let store = MoveDetailStore(service: diObject.movieDetailService, selectedMovie: movie)
+            MovieDetailView(store: store)
         }
     }
 }
@@ -74,50 +76,6 @@ struct MovieList: View {
         }
         .padding(.horizontal, 16)
         .listStyle(.plain)
-    }
-}
-
-
-struct MovieDetailView1: View {
-    let movie: TVShow2DTO
-    
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                AsyncImage(url: URL(string: "\(imagePath)\(movie.posterPath ?? "")")) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                } placeholder: {
-                    Color.gray.opacity(0.3)
-                }
-                .frame(maxHeight: 400)
-                
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(movie.name)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    HStack {
-                        Text("⭐️ \(String(format: "%.1f", movie.voteAverage))")
-                        Text("•")
-                        Text(movie.firstAirDate ?? "")
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    
-                    Text("Overview")
-                        .font(.headline)
-                        .padding(.top, 8)
-                    
-                    Text(movie.overview)
-                        .font(.body)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.horizontal)
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
