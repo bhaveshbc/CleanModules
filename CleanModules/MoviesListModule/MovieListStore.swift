@@ -21,23 +21,23 @@ struct MovieListStore: DynamicProperty {
     var wrappedValue:MoviesListState {
         return state
     }
-
+    
+    @MainActor
     var projectedValue: TodayMovieStoreProjection {
         TodayMovieStoreProjection(state: state, actions: .init(onRefresh: handleRefresh, onLoadMore: loadMore))
     }
     
+    @MainActor
     private func handleRefresh() async {
-        await Task.detached { @MainActor in
-            // Cancel any existing task before starting new one
-            currentTask?.cancel()
-            currentTask = nil
-            // Reset state
-            state = reduce(state: state, action: .reset)
-            
-            await performLoad()
-        }.value
+        currentTask?.cancel()
+        currentTask = nil
+        // Reset state
+        state = reduce(state: state, action: .reset)
+        
+        await performLoad()
     }
     
+    @MainActor
     private func loadMore(currentIndex: Int, loadedMovieCout: Int) async {
         
         guard state.shouldLoadMore else { return }
@@ -48,6 +48,7 @@ struct MovieListStore: DynamicProperty {
         await performLoad()
     }
     
+    @MainActor
     private func performLoad() async {
         guard !state.isIntialLoading && !state.isPagningNating else {
             print(" Request already in progress, skipping")
@@ -57,7 +58,7 @@ struct MovieListStore: DynamicProperty {
         let isInitial = state.movies.isEmpty
         state = reduce(state: state, action: .startLoading(isInitial: isInitial))
         
-        let task = Task { @MainActor in
+        currentTask = Task {
             do {
                 let response = try await service.fetchMovieList(pageIndex: state.pageIndex)
                 try Task.checkCancellation()
@@ -79,8 +80,8 @@ struct MovieListStore: DynamicProperty {
             }
         }
         
-       currentTask = task
-        await task.value
+    
+        await currentTask?.value
     }
     
 }
