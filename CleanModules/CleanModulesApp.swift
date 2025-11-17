@@ -9,9 +9,12 @@ import SwiftUI
 import APIClient
 @main
 struct CleanModulesApp: App {
+    
+    let diObject: DIContainer = DIContainer()
+    
     var body: some Scene {
         WindowGroup {
-            MovieTabView()
+            MovieTabView().environment(diObject)
         }
     }
 }
