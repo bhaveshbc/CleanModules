@@ -29,7 +29,7 @@ struct MovieDetailView: View {
             case .loadFailure(let error):
                 EmptyStateView(message: error)
             }
-        }.task(id: false) {
+        }.toolbar(.hidden, for: .tabBar).task(id: false) {
              store.fetchMoveDetail()
         }
     }
@@ -39,7 +39,7 @@ struct MovieDetailView: View {
             VStack(alignment: .leading, spacing: 16) {
 
                 // MARK: Top Image
-                ParallaxHeader(coordinateSpace: CoordinateSpaces.scrollView, defaultHeight: 260, {
+                ParallaxHeader(coordinateSpace: CoordinateSpaces.scrollView, defaultHeight: 400, {
                     AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w780\(movie.backdropPath ?? "")")) { img in
                         img
                             .resizable()
@@ -48,19 +48,28 @@ struct MovieDetailView: View {
                         Color.gray.opacity(0.3)
                     }
                 })
-                // MARK: Title & Tagline
-                VStack {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(movie.name ?? "")
-                            .font(.largeTitle.bold())
-                        
-                        if let tagline = movie.tagline, !tagline.isEmpty {
-                            Text(tagline)
-                                .font(.headline)
-                                .foregroundColor(.secondary)
+    
+                VStack(alignment: .leading, spacing: 16) {
+               
+                    // MARK: Title & Tagline
+                    HStack(alignment: .center) {
+
+                        VStack( spacing: 0) {
+                            Text(movie.name ?? "")
+                                .font(.largeTitle.bold())
+                            
+                            if let tagline = movie.tagline, !tagline.isEmpty {
+                                Text(tagline)
+                                    .font(.headline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }.frame(maxWidth: .infinity, alignment: .center)
+
+                        if let voteCount = movie.voteCount, let voteAverage = movie.voteAverage {
+                            CircularRatingView(rating: voteAverage, totalVotes: voteCount).padding(.horizontal)
                         }
-                    }.background(Color.white)
-                    .padding(.horizontal)
+
+                    }.padding()
                     
                     
                     // MARK: Genres
@@ -75,7 +84,7 @@ struct MovieDetailView: View {
                                         .background(Color.blue.opacity(0.15))
                                         .clipShape(Capsule())
                                 }
-                            }.background(Color.white)
+                            }
                             .padding(.horizontal)
                         }
                     }
@@ -88,7 +97,7 @@ struct MovieDetailView: View {
                         Text(movie.overview ?? "")
                             .font(.body)
                             .foregroundColor(.secondary)
-                    }.background(Color.white)
+                    }
                     .padding(.horizontal)
                     
                     
@@ -117,21 +126,22 @@ struct MovieDetailView: View {
                                     }
                                 }
                             }
-                        }.background(Color.white)
+                        }
                         .padding(.horizontal)
                     }
 
                     // MARK: Next & Last Episodes
                     if let last = movie.lastEpisodeToAir {
-                        episodeSection(title: "Last Episode", ep: last).background(Color.white)
+                        episodeSection(title: "Last Episode", ep: last)
                     }
 
                     if let next = movie.nextEpisodeToAir {
-                        episodeSection(title: "Next Episode", ep: next).background(Color.white)
+                        episodeSection(title: "Next Episode", ep: next)
                     }
                     
-                    Spacer().frame(height: 20).background(Color.white)
-                }.frame(maxWidth: .infinity).background(Color.white)
+                    Spacer().frame(height: 20)
+                    
+                }.frame(maxWidth: .infinity).background(Color.stackBG)
             }
         }.coordinateSpace(name: CoordinateSpaces.scrollView)
         .ignoresSafeArea(edges: .top)
@@ -151,11 +161,13 @@ struct MovieDetailView: View {
                 
                 Text(ep.overview)
                     .foregroundColor(.secondary)
-                
                 HStack {
-                    Text("Air Date: \(ep.airDate)")
-                    Spacer()
-                    Text("Runtime: \(ep.runtime) min")
+                    if let date = ep.airDate, !date.isEmpty {
+                        Text("Air Date: \(date)")
+                    }
+                    if let runtime = ep.runtime, runtime > 0 {
+                        Text("Runtime: \(runtime) min")
+                    }
                 }
                 .font(.caption)
                 .foregroundColor(.secondary)
