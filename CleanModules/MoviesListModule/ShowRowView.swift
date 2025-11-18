@@ -40,11 +40,14 @@ struct ShowRowView: View {
                 
                 Text(show.overview)
                     .font(.footnote)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.primary)
                     .lineLimit(3)
             }
-        }
-        .padding(.vertical, 8)
+            Spacer()
+        }.frame(maxWidth: .infinity)
+            .padding( 8).background((Color.gray.opacity(0.1)))
+            .cornerRadius(12)
+            .shadow(color: Color.primary.opacity(0.15), radius: 8, x: 4, y: 4)
     }
 }
 

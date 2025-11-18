@@ -38,7 +38,7 @@ struct MovieTabView: View {
             .tabItem { Label("Today", systemImage: "calendar.badge.clock") }
             .tag(0)
 
-            PopularMovieTabView(apiService: diObject.todayApiService)
+            PopularMovieTabView(apiService: diObject.popularApiService)
             .tabItem { Label("Popular", systemImage: "star.fill") }
             .tag(1)
         }

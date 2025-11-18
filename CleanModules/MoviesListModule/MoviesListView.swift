@@ -26,7 +26,7 @@ struct MoviesListView: View {
             case .empty(let message), .error(let message):
                 EmptyStateView(message: message)
             }
-        }.task(id: false) {
+        }.task {
             await $movieStore.actions.onRefresh()
         }.navigationDestination(for: TVShow2DTO.self) { movie in
             let store = MoveDetailStore(service: diObject.movieDetailService, selectedMovie: movie)

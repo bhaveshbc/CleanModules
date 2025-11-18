@@ -63,7 +63,6 @@ struct MovieListStore: DynamicProperty {
     @MainActor
     private func performLoad() async {
         guard !state.isIntialLoading && !state.isPagningNating else {
-            print(" Request already in progress, skipping")
             return
         }
         
@@ -82,11 +81,9 @@ struct MovieListStore: DynamicProperty {
                     )
                 )
             } catch is CancellationError {
-                print("Task was cancelled (expected behavior)")
                 return
             } catch {
                 if !Task.isCancelled {
-                    print("Error loading notifications: \(error.localizedDescription)")
                     state = reduce(state: state, action: .loadFailure(error: error.localizedDescription))
                 }
             }
