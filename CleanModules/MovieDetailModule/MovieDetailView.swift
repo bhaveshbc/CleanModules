@@ -103,20 +103,13 @@ struct MovieDetailView: View {
                     
                     // MARK: Creator Section
                     if !movie.createdBy.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 15) {
                             Text("Created By")
                                 .font(.title3.bold())
 
                             ForEach(movie.createdBy, id: \.id) { creator in
                                 HStack(spacing: 12) {
-                                    AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w185\(creator.profilePath ?? "")")) { img in
-                                        img.resizable().scaledToFill()
-                                    } placeholder: {
-                                        Color.gray.opacity(0.2)
-                                    }
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(Circle())
-
+                                    ProfileImageView(url: URL(string: "https://image.tmdb.org/t/p/w185\(creator.profilePath ?? "")"), size: 80)
                                     VStack(alignment: .leading) {
                                         Text(creator.name)
                                             .font(.headline)
