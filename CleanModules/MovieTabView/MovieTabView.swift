@@ -14,14 +14,12 @@ struct MovieRootView: View {
     
     var body: some View {
         #if os(iOS)
-        // For iPhone only (TabBar)
         if UIDevice.current.userInterfaceIdiom == .phone {
             MovieTabView().environment(diObject)
         } else {
             MovieSidebarView().environment(diObject)
         }
         #else
-        // macOS always uses sidebar
         MovieSidebarView().environment(diObject)
         #endif
     }
