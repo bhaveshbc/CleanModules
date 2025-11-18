@@ -17,7 +17,6 @@ struct MoviesListView: View {
     var body: some View {
         
         let _ = Self._printChanges()
-        
         VStack {
             switch $movieStore.state.displayState {
             case .loading:
@@ -33,6 +32,7 @@ struct MoviesListView: View {
             let store = MoveDetailStore(service: diObject.movieDetailService, selectedMovie: movie)
             MovieDetailView(store: store)
         }
+
     }
 }
 

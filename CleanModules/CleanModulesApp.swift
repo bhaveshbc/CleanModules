@@ -14,7 +14,7 @@ struct CleanModulesApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MovieTabView().environment(diObject)
+            MovieRootView().environment(diObject)
         }
     }
 }
