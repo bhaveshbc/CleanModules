@@ -44,6 +44,7 @@ The app uses The Movie Database (**TMDB**) public API to fetch:
 
 ## 🖥 SwiftUI Views
 
+![App Preview](./Resources/1.png)
 
 ### **MovieList**
 
