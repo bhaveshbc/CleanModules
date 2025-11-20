@@ -41,6 +41,7 @@ The app uses The Movie Database (**TMDB**) public API to fetch:
 * **Popular TV Shows**
 
 ---
+![alt text](https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/1.png)
 
 ## 🖥 SwiftUI Views
 
