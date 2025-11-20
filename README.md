@@ -1,4 +1,4 @@
-# CleanModules Movie App
+ # CleanModules Movie App
 
 Modular iOS Development • SwiftUI • Combine • Async/Await • Architecture
 
@@ -14,8 +14,6 @@ A showcase project demonstrating a **Redux-like architecture using a custom Swif
 * Clear unidirectional data flow inspired by Redux.
 * `MoviesListState`, `MoviesListAction`, and `reduce()` replicate predictable state transitions.
 * Supports **pull-to-refresh**, **pagination**, and **error handling**.
-
----
 
 ## 🧩 Project Architecture
 
@@ -44,7 +42,18 @@ The app uses The Movie Database (**TMDB**) public API to fetch:
 
 ## 🖥 SwiftUI Views
 
-![App Preview](./Resources/1.png)
+
+<img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/1.png" width="300" height = "600" style="margin-top:20px; margin-right:50px;"/>
+
+
+<img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/2.png" width="300" height = "600" style="margin-right:50px;"/>
+
+
+
+
+<img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/3.png" width="300" height = "600" style="margin-right:50px;"/>
+
+<img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/4.png" width="300" height = "600" style="margin-top:50px; margin-right:50px;"/>
 
 ### **MovieList**
 
