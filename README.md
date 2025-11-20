@@ -39,9 +39,6 @@ The app uses The Movie Database (**TMDB**) public API to fetch:
 * **Popular TV Shows**
 
 ---
-![alt text](https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/1.png)
-
-<img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/1.png" width="200" height = "700"/>
 
 ## 🖥 SwiftUI Views
 
@@ -50,8 +47,6 @@ The app uses The Movie Database (**TMDB**) public API to fetch:
 
 
 <img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/2.png" width="300" height = "600" style="margin-right:50px;"/>
-
-
 
 
 <img src="https://raw.githubusercontent.com/bhaveshbc/CleanModules/refs/heads/main/CleanModules/Resources/3.png" width="300" height = "600" style="margin-right:50px;"/>
